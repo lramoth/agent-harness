@@ -243,6 +243,9 @@ The Planner Agent writes an evaluation specification in `evals/`.
 The evaluation is derived from the specification rather than the
 implementation. It describes observable scenarios and grading instructions.
 
+The evaluation specification is authored only after implementation is complete,
+and is not shared with the Implementation Agent.
+
 Evaluation is performed independently by an Evaluation Agent in fresh context.
 The Planner Agent records the evaluation result in the Work File.
 
@@ -258,8 +261,11 @@ The Planner Agent records the evaluation result in the Work File.
    tests, and reports observations.
 6. The Planner Agent records the implementation summary, observations, tests
    or checks run, assumptions, limitations, and future work in the Work File.
-7. The Planner Agent writes an evaluation specification in `evals/` and records
-   its path in the Work File.
+7. Only after implementation is complete and recorded (steps 5-6) does the
+   Planner Agent write an evaluation specification in `evals/` and record its
+   path in the Work File. The evaluation specification must not be authored
+   earlier or in parallel with implementation, so that it never exists in a
+   location the Implementation Agent could read while working.
 8. The Planner Agent delegates evaluation to a fresh-context Evaluation Agent.
 9. The Evaluation Agent reports scenario results and an overall verdict.
 10. The Planner Agent records the evaluation result and final summary in the
