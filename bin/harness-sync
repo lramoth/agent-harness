@@ -1,0 +1,32 @@
+#!/bin/sh
+# harness-sync — distribute harness skills to tool-specific skill directories.
+#
+# Strictly additive: creates a symlink for each skill only when no entry with
+# that name exists in the target directory. Never deletes, overwrites, or
+# repairs existing entries (including dead symlinks and ~/.codex/skills/.system).
+
+set -eu
+
+SKILLS_SRC="$HOME/Projects/harness/skills"
+TARGETS="$HOME/.claude/skills $HOME/.codex/skills"
+
+created=0
+skipped=0
+
+for target in $TARGETS; do
+    mkdir -p "$target"
+    for skill_dir in "$SKILLS_SRC"/*/; do
+        skill=$(basename "$skill_dir")
+        if [ -e "$target/$skill" ] || [ -L "$target/$skill" ]; then
+            echo "already linked: $target/$skill"
+            skipped=$((skipped + 1))
+        else
+            ln -s "$SKILLS_SRC/$skill" "$target/$skill"
+            echo "linked: $target/$skill -> $SKILLS_SRC/$skill"
+            created=$((created + 1))
+        fi
+    done
+done
+
+echo "harness-sync: $created link(s) created, $skipped already present."
+exit 0

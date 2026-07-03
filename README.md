@@ -30,12 +30,15 @@ restate roles, lifecycles, or stopping conditions; they reference
 ## Skill distribution
 
 Skills are distributed by symlinking each skill directory into the
-tool-specific global skill locations:
+tool-specific global skill locations. After adding a skill, run:
 
 ```sh
-ln -s ~/Projects/harness/skills/<skill-name> ~/.claude/skills/<skill-name>
-ln -s ~/Projects/harness/skills/<skill-name> ~/.codex/skills/<skill-name>
+~/Projects/harness/bin/harness-sync
 ```
+
+It links every skill under `skills/` into `~/.claude/skills` and
+`~/.codex/skills`, skipping anything already present. It is idempotent and
+safe to run anytime.
 
 Because they are symlinks, editing a skill in the harness updates it for
 both Claude Code and Codex immediately. The skill files themselves stay
