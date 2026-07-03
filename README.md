@@ -52,9 +52,9 @@ From the new project's root directory, run:
 ~/Projects/harness/bin/harness-init
 ```
 
-This copies `AGENTS.template.md`, `CLAUDE.template.md`, and
-`work-file.template.md` into the current directory as `AGENTS.md`,
-`CLAUDE.md`, and `WORK_FILE.md`, stamps the harness version (from
-`git describe`) into `WORK_FILE.md`, refuses to overwrite existing files,
-and prints the next steps. Fill in the project-specific sections of
-`AGENTS.md` and you are ready to work.
+This copies `AGENTS.template.md` and `CLAUDE.template.md` into the current
+directory as `AGENTS.md` and `CLAUDE.md`, creates the `specs/`, `evals/`, and
+`work/` directories, copies `work-file.template.md` into `work/` as
+`WORK_FILE.md`, stamps the harness version (from `git describe`) into that
+Work File, refuses to overwrite existing files, and prints the next steps.
+Fill in the project-specific sections of `AGENTS.md` and you are ready to work.
