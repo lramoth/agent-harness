@@ -19,3 +19,5 @@ The four roles and their boundaries:
 Read `~/Projects/harness/docs/development_workflow.md` before acting in any
 role — it defines lifecycles, reporting requirements, and stopping
 conditions.
+
+Principles behind these rules: `~/Projects/harness/docs/governance.md`.
