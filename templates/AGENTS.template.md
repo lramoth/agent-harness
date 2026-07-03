@@ -23,7 +23,9 @@ This project follows the harness development workflow. Roles, lifecycles,
 and stopping conditions are defined in
 `~/Projects/harness/docs/development_workflow.md` and surfaced through
 globally installed skills. Governance principles:
-`~/Projects/harness/docs/governance.md`.
+`~/Projects/harness/docs/governance.md`. An existing artifact may be read
+for domain context, but its layout is never a substitute for invoking the
+relevant skill, which carries the current structure.
 
 Agents must not explore, list, or reference anything outside this project's
 directory tree, with one exception: reading files under the harness directory
