@@ -25,75 +25,58 @@ restate roles, lifecycles, or stopping conditions; they reference
   to `docs/` and `templates/` for depth.
 - `templates/` — starting points for specs, evals, Work Files, and new
   projects' `AGENTS.md` / `CLAUDE.md`.
-- `bin/harness-init` — project bootstrap script.
-- `bin/harness-attach` — reconnects an already-bootstrapped project (fresh
-  clone, second machine, CI) to this harness checkout.
+- `bin/` — the commands below.
 
-## Skill distribution
+## Commands
 
-Skills are distributed by symlinking each skill directory into the
-tool-specific global skill locations. After adding a skill, run:
+Run these as `/path/to/harness/bin/<command>`.
 
-```sh
-/path/to/harness/bin/harness-sync
-```
+| Command | Purpose | Safe to re-run? |
+| --- | --- | --- |
+| `harness-sync` | Symlinks every skill under `skills/` into `~/.claude/skills` and `~/.codex/skills`, skipping anything already present. | Yes — additive only. |
+| `harness-init` | Bootstraps a new project: copies `AGENTS.md`, `CLAUDE.md`, `architecture.md` from templates, creates `specs/`, `evals/`, `work/`, writes `.harness-root`, and stamps the harness version at the bottom of `AGENTS.md`. | No — refuses to overwrite anything that already exists. |
+| `harness-attach` | Reconnects an already-bootstrapped project (fresh clone, second machine, CI): writes `.harness-root` if missing and creates any of `specs/`, `evals/`, `work/` that are missing. | Yes — touches nothing that already exists. |
+| `harness-check` | Reports whether the project's stamped harness version is behind, and which harness skills aren't linked locally yet. Makes no changes. | Yes — read-only. |
+| `harness-upgrade` | Runs `harness-sync`, then updates the project's stamped harness version to match. | Yes. |
 
-It links every skill under `skills/` into `~/.claude/skills` and
-`~/.codex/skills`, skipping anything already present. It is idempotent and
-safe to run anytime.
-
-Because they are symlinks, editing a skill in the harness updates it for
-both Claude Code and Codex immediately. The skill files themselves stay
-plain markdown so any tool that reads a `SKILL.md` can consume them.
+Because skills are distributed as symlinks, editing a skill in the harness
+updates it for both Claude Code and Codex immediately. The skill files
+themselves stay plain markdown so any tool that reads a `SKILL.md` can
+consume them.
 
 ## Bootstrapping a new project
 
-> **Before you start:** run `/path/to/harness/bin/harness-sync` at least once
-> so the harness skills are symlinked into your tool's global skills
-> directory. Without this step, skills like `work-file` and `spec-authoring`
-> won't be available in the new project.
+> **Before you start:** run `harness-sync` at least once so the harness
+> skills are symlinked into your tool's global skills directory. Without
+> this step, skills like `work-file` and `spec-authoring` won't be available
+> in the new project.
 
-From the new project's root directory, run:
+From the new project's root directory, run `harness-init` (see Commands
+above for what it creates). Afterward, the project looks like:
 
-```sh
-/path/to/harness/bin/harness-init
 ```
-
-This creates:
-
-- `AGENTS.md` and `CLAUDE.md` — copied from the harness templates, with the
-  harness version (from `git describe`) stamped at the bottom of `AGENTS.md`
-- `architecture.md` — copied from the harness template; describes the
-  application's current structure and is kept up to date by the
-  `architecture` skill as features land
-- `specs/`, `evals/`, `work/` — empty directories for the workflow's
-  artifacts. Work Files are created per feature (one file per feature, named
-  after the feature) by the `work-file` skill — none are pre-seeded.
-- `.harness-root` — records the harness's location so skills and docs can
-  find it regardless of where the harness is cloned. Machine-specific, so
-  `harness-init` adds it to `.gitignore` automatically.
-
-`harness-init` refuses to overwrite any file that already exists.
-
-## Reconnecting a project on a new clone or machine
-
-`.harness-root` is gitignored (it's machine-specific), so a fresh clone,
-a second machine, or a CI checkout of an already-bootstrapped project won't
-have it — and `harness-init` will refuse to run again since `AGENTS.md` etc.
-already exist. Use `harness-attach` instead:
-
-```sh
-/path/to/harness/bin/harness-attach
+project-root/
+├── .gitignore
+├── .harness-root       # gitignored — machine-specific harness location
+├── AGENTS.md           # stamped with the harness version at the bottom
+├── CLAUDE.md           # imports AGENTS.md
+├── architecture.md
+├── specs/              # empty — behavioral specifications land here
+├── evals/              # empty — evaluation specifications land here
+└── work/               # empty — one Work File per feature, via the work-file skill
 ```
-
-It writes `.harness-root` if missing, creates any of `specs/`, `evals/`,
-`work/` that are missing, and otherwise touches nothing that already exists.
-Safe to run anytime, including on an already-attached project.
 
 **Next steps:**
 
 1. Fill in the project-specific sections of `AGENTS.md`.
 2. You're ready to work — see the example below.
+
+## Reconnecting a project on a new clone or machine
+
+`.harness-root` is gitignored (it's machine-specific), so a fresh clone, a
+second machine, or a CI checkout of an already-bootstrapped project won't
+have it — and `harness-init` will refuse to run again since `AGENTS.md` etc.
+already exist. Run `harness-attach` instead (see Commands above).
 
 ## Example: requesting a feature
 
@@ -126,21 +109,5 @@ Each `harness-init`'d project stamps the harness version it was bootstrapped
 from at the bottom of `AGENTS.md`. As the harness moves on — new skills, a
 changed `docs/development_workflow.md` — a project's stamp can fall behind.
 
-From the project's root directory:
-
-```sh
-/path/to/harness/bin/harness-check
-```
-
-Reports whether the project's stamped version matches the harness's current
-version, and lists any harness skills that exist upstream but aren't linked
-into this machine's skill directories yet. It makes no changes.
-
-```sh
-/path/to/harness/bin/harness-upgrade
-```
-
-Runs `harness-sync` to link any new skills, then updates the project's
-stamped version to match the harness. Safe to run anytime — skill linking is
-additive and the stamp update only ever changes the version comment in
-`AGENTS.md`.
+From the project's root directory, run `harness-check` to see if it's
+behind, then `harness-upgrade` to catch it up (see Commands above).
