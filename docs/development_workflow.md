@@ -156,6 +156,7 @@ Implementation reports must include:
 
 - spec used
 - summary of observable work completed
+- implementation observations
 - tests or checks run
 - assumptions made
 - limitations or gaps
