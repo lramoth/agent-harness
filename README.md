@@ -101,3 +101,28 @@ Then hand it off:
 This drives the full loop: specification, implementation, evaluation, an
 architecture update, and a final summary recorded back in the Work File for
 the Director to accept.
+
+## Staying current with the harness
+
+Each `harness-init`'d project stamps the harness version it was bootstrapped
+from at the bottom of `AGENTS.md`. As the harness moves on — new skills, a
+changed `docs/development_workflow.md` — a project's stamp can fall behind.
+
+From the project's root directory:
+
+```sh
+/path/to/harness/bin/harness-check
+```
+
+Reports whether the project's stamped version matches the harness's current
+version, and lists any harness skills that exist upstream but aren't linked
+into this machine's skill directories yet. It makes no changes.
+
+```sh
+/path/to/harness/bin/harness-upgrade
+```
+
+Runs `harness-sync` to link any new skills, then updates the project's
+stamped version to match the harness. Safe to run anytime — skill linking is
+additive and the stamp update only ever changes the version comment in
+`AGENTS.md`.

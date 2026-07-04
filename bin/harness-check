@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# harness-check — report whether this project's stamped harness version is
+# behind the harness repo, and which harness skills aren't linked locally yet.
+# Run from the root of a project that was bootstrapped with harness-init.
+set -euo pipefail
+
+if [ ! -f .harness-root ]; then
+  echo "error: .harness-root not found in $(pwd) — is this a harness-init'd project?" >&2
+  exit 1
+fi
+
+HARNESS_DIR="$(cat .harness-root)"
+SKILLS_SRC="$HARNESS_DIR/skills"
+TARGETS="$HOME/.claude/skills $HOME/.codex/skills"
+PROJECT_NAME="$(basename "$(pwd)")"
+
+if [ ! -f AGENTS.md ]; then
+  echo "error: AGENTS.md not found in $(pwd)" >&2
+  exit 1
+fi
+
+STAMPED="$(grep -o 'harness version: [^ ]*' AGENTS.md | tail -1 | cut -d' ' -f3 || true)"
+if [ -z "$STAMPED" ]; then
+  echo "error: no '<!-- harness version: ... -->' stamp found in AGENTS.md" >&2
+  exit 1
+fi
+
+CURRENT="$(git -C "$HARNESS_DIR" describe --tags --always)"
+
+missing=""
+for skill_dir in "$SKILLS_SRC"/*/; do
+  skill=$(basename "$skill_dir")
+  for target in $TARGETS; do
+    if [ ! -e "$target/$skill" ] && [ ! -L "$target/$skill" ]; then
+      case " $missing " in
+        *" $skill "*) ;;
+        *) missing="$missing $skill" ;;
+      esac
+    fi
+  done
+done
+
+if [ "$STAMPED" = "$CURRENT" ] && [ -z "$missing" ]; then
+  echo "harness-check: $PROJECT_NAME is up to date ($CURRENT), all skills linked."
+  exit 0
+fi
+
+echo "harness-check: $PROJECT_NAME is stamped at $STAMPED, harness is at $CURRENT"
+
+if [ -n "$missing" ]; then
+  echo
+  echo "Skills not yet linked:"
+  for skill in $missing; do
+    echo "  - $skill"
+  done
+fi
+
+echo
+echo "Run harness-upgrade to link new skills and update the stamp."
