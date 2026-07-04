@@ -43,4 +43,4 @@ echo "  .harness-root — records the harness location ($HARNESS_DIR) for skills
 echo
 echo "Next steps:"
 echo "  1. Edit AGENTS.md with this project's specifics."
-echo "  2. Ensure harness skills are symlinked into your tool's global skills dir."
+echo "  2. Run $HARNESS_DIR/bin/harness-sync if you haven't already (safe to re-run)."
