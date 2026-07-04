@@ -46,21 +46,33 @@ plain markdown so any tool that reads a `SKILL.md` can consume them.
 
 ## Bootstrapping a new project
 
+> **Before you start:** run `/path/to/harness/bin/harness-sync` at least once
+> so the harness skills are symlinked into your tool's global skills
+> directory. Without this step, skills like `work-file` and `spec-authoring`
+> won't be available in the new project.
+
 From the new project's root directory, run:
 
 ```sh
 /path/to/harness/bin/harness-init
 ```
 
-This copies `AGENTS.template.md` and `CLAUDE.template.md` into the current
-directory as `AGENTS.md` and `CLAUDE.md`, creates the empty `specs/`,
-`evals/`, and `work/` directories, stamps the harness version (from `git
-describe`) at the bottom of `AGENTS.md`, writes a `.harness-root` file
-recording the harness's location so skills and docs can find it regardless
-of where it's cloned, refuses to overwrite existing files, and prints the
-next steps. Fill in the project-specific sections of `AGENTS.md` and you are
-ready to work. Work Files are created per feature (one file per feature,
-named after the feature) by the `work-file` skill — none are pre-seeded.
+This creates:
+
+- `AGENTS.md` and `CLAUDE.md` — copied from the harness templates, with the
+  harness version (from `git describe`) stamped at the bottom of `AGENTS.md`
+- `specs/`, `evals/`, `work/` — empty directories for the workflow's
+  artifacts. Work Files are created per feature (one file per feature, named
+  after the feature) by the `work-file` skill — none are pre-seeded.
+- `.harness-root` — records the harness's location so skills and docs can
+  find it regardless of where the harness is cloned
+
+`harness-init` refuses to overwrite any file that already exists.
+
+**Next steps:**
+
+1. Fill in the project-specific sections of `AGENTS.md`.
+2. You're ready to work — see the example below.
 
 ## Example: requesting a feature
 
