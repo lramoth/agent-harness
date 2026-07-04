@@ -29,6 +29,10 @@ cp "$TEMPLATES_DIR/architecture.template.md" architecture.md
 
 printf '%s\n' "$HARNESS_DIR" > .harness-root
 
+if [ ! -f .gitignore ] || ! grep -qxF '.harness-root' .gitignore; then
+  printf '%s\n' ".harness-root" >> .gitignore
+fi
+
 HARNESS_VERSION="$(git -C "$HARNESS_DIR" describe --tags --always 2>/dev/null || echo unknown)"
 printf '\n<!-- harness version: %s -->\n' "$HARNESS_VERSION" >> AGENTS.md
 
@@ -41,7 +45,7 @@ echo "  architecture.md — current-state application structure; kept up to date
 echo "  specs/        — behavioral specifications"
 echo "  evals/        — evaluation specifications"
 echo "  work/         — per-feature Work Files (empty; the work-file skill creates one per feature)"
-echo "  .harness-root — records the harness location ($HARNESS_DIR) for skills and docs"
+echo "  .harness-root — records the harness location ($HARNESS_DIR) for skills and docs (gitignored — machine-specific)"
 echo
 echo "Next steps:"
 echo "  1. Edit AGENTS.md with this project's specifics."

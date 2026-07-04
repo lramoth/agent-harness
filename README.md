@@ -68,7 +68,8 @@ This creates:
   artifacts. Work Files are created per feature (one file per feature, named
   after the feature) by the `work-file` skill — none are pre-seeded.
 - `.harness-root` — records the harness's location so skills and docs can
-  find it regardless of where the harness is cloned
+  find it regardless of where the harness is cloned. Machine-specific, so
+  `harness-init` adds it to `.gitignore` automatically.
 
 `harness-init` refuses to overwrite any file that already exists.
 
