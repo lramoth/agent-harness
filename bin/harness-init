@@ -13,7 +13,7 @@ if [ ! -d "$TEMPLATES_DIR" ]; then
 fi
 
 # Refuse to overwrite anything that already exists.
-for target in AGENTS.md CLAUDE.md work/WORK_FILE.md .harness-root; do
+for target in AGENTS.md CLAUDE.md .harness-root; do
   if [ -e "$target" ]; then
     echo "error: $target already exists in $(pwd) — refusing to overwrite" >&2
     exit 1
@@ -25,23 +25,21 @@ mkdir -p specs evals work
 
 cp "$TEMPLATES_DIR/AGENTS.template.md" AGENTS.md
 cp "$TEMPLATES_DIR/CLAUDE.template.md" CLAUDE.md
-cp "$TEMPLATES_DIR/work-file.template.md" work/WORK_FILE.md
 
 printf '%s\n' "$HARNESS_DIR" > .harness-root
 
 HARNESS_VERSION="$(git -C "$HARNESS_DIR" describe --tags --always 2>/dev/null || echo unknown)"
-printf '\n<!-- harness version: %s -->\n' "$HARNESS_VERSION" >> work/WORK_FILE.md
+printf '\n<!-- harness version: %s -->\n' "$HARNESS_VERSION" >> AGENTS.md
 
 echo "Bootstrapped project from harness $HARNESS_VERSION"
 echo
 echo "Created:"
-echo "  AGENTS.md         — fill in Project Overview, Stack & Conventions, Dependencies"
-echo "  CLAUDE.md         — imports AGENTS.md; add Claude Code overrides if needed"
-echo "  specs/            — behavioral specifications"
-echo "  evals/            — evaluation specifications"
-echo "  work/             — per-feature Work Files"
-echo "  work/WORK_FILE.md — starter Work File (harness version stamped at the bottom)"
-echo "  .harness-root     — records the harness location ($HARNESS_DIR) for skills and docs"
+echo "  AGENTS.md     — fill in Project Overview, Stack & Conventions, Dependencies (harness version stamped at the bottom)"
+echo "  CLAUDE.md     — imports AGENTS.md; add Claude Code overrides if needed"
+echo "  specs/        — behavioral specifications"
+echo "  evals/        — evaluation specifications"
+echo "  work/         — per-feature Work Files (empty; the work-file skill creates one per feature)"
+echo "  .harness-root — records the harness location ($HARNESS_DIR) for skills and docs"
 echo
 echo "Next steps:"
 echo "  1. Edit AGENTS.md with this project's specifics."

@@ -184,6 +184,9 @@ permitted.
 
 ## Work File Lifecycle
 
+Each feature gets its own Work File, named `work/<kebab-case-feature-title>.md`.
+A Work File is never reused or overwritten for a different feature.
+
 The Work File starts as a lightweight Director-owned request:
 
 ```markdown

@@ -53,13 +53,14 @@ From the new project's root directory, run:
 ```
 
 This copies `AGENTS.template.md` and `CLAUDE.template.md` into the current
-directory as `AGENTS.md` and `CLAUDE.md`, creates the `specs/`, `evals/`, and
-`work/` directories, copies `work-file.template.md` into `work/` as
-`WORK_FILE.md`, stamps the harness version (from `git describe`) into that
-Work File, writes a `.harness-root` file recording the harness's location so
-skills and docs can find it regardless of where it's cloned, refuses to
-overwrite existing files, and prints the next steps. Fill in the
-project-specific sections of `AGENTS.md` and you are ready to work.
+directory as `AGENTS.md` and `CLAUDE.md`, creates the empty `specs/`,
+`evals/`, and `work/` directories, stamps the harness version (from `git
+describe`) at the bottom of `AGENTS.md`, writes a `.harness-root` file
+recording the harness's location so skills and docs can find it regardless
+of where it's cloned, refuses to overwrite existing files, and prints the
+next steps. Fill in the project-specific sections of `AGENTS.md` and you are
+ready to work. Work Files are created per feature (one file per feature,
+named after the feature) by the `work-file` skill — none are pre-seeded.
 
 ## Example: requesting a feature
 
