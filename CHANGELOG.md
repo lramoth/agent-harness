@@ -12,6 +12,8 @@ projects (e.g. "this version added `architecture.md` — create one via the
 
 ## [Unreleased]
 
+## [v0.2.0] - 2026-07-04
+
 - Added `harness-attach` for reconnecting an already-bootstrapped project
   (fresh clone, second machine, CI) without overwriting existing files.
 - `harness-check` now detects dangling skill symlinks (skills removed
