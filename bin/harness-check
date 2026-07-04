@@ -6,6 +6,10 @@
 # Exits 0 when everything is current and linked; exits 1 otherwise.
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+# shellcheck source=bin/lib/changelog.sh
+source "$SCRIPT_DIR/lib/changelog.sh"
+
 if [ ! -f .harness-root ]; then
   echo "error: .harness-root not found in $(pwd) — is this a harness-init'd project?" >&2
   exit 1
@@ -58,6 +62,11 @@ if [ -z "$STAMPED" ]; then
   echo "harness-check: $PROJECT_NAME has no '<!-- agent-harness version: ... -->' stamp in AGENTS.md"
 elif [ "$STAMPED" != "$CURRENT" ]; then
   echo "harness-check: $PROJECT_NAME is stamped at $STAMPED, harness is at $CURRENT"
+  changelog_output="$(print_changelog_since "$STAMPED" "$HARNESS_DIR")"
+  if [ -n "$changelog_output" ]; then
+    echo
+    echo "$changelog_output"
+  fi
 fi
 
 if [ -n "$missing" ]; then

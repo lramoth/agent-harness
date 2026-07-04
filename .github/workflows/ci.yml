@@ -11,6 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: shellcheck
-        run: shellcheck bin/* test/smoke-test.sh
+        run: shellcheck -x bin/harness-* bin/lib/*.sh test/smoke-test.sh
       - name: smoke test
         run: bash test/smoke-test.sh

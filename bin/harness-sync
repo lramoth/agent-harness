@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 # harness-sync — distribute harness skills to tool-specific skill directories.
 #
 # Default mode is strictly additive: creates a symlink for each skill only
@@ -11,9 +11,9 @@
 # doing the normal additive pass. Only ever touches symlinks that resolve
 # into this harness checkout; leaves everything else untouched.
 
-set -eu
+set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 HARNESS_DIR="$(dirname "$SCRIPT_DIR")"
 SKILLS_SRC="$HARNESS_DIR/skills"
 TARGETS="$HOME/.claude/skills $HOME/.codex/skills"

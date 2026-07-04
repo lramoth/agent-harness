@@ -5,6 +5,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+# shellcheck source=bin/lib/changelog.sh
+source "$SCRIPT_DIR/lib/changelog.sh"
 
 if [ ! -f .harness-root ]; then
   echo "error: .harness-root not found in $(pwd) — is this a harness-init'd project?" >&2
@@ -31,6 +33,14 @@ echo
 if [ "$STAMPED" = "$CURRENT" ]; then
   echo "Stamp unchanged: $PROJECT_NAME is already on harness $CURRENT."
   exit 0
+fi
+
+if [ -n "$STAMPED" ]; then
+  changelog_output="$(print_changelog_since "$STAMPED" "$HARNESS_DIR")"
+  if [ -n "$changelog_output" ]; then
+    echo "$changelog_output"
+    echo
+  fi
 fi
 
 if [ -z "$STAMPED" ]; then

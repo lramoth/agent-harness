@@ -26,6 +26,7 @@ restate roles, lifecycles, or stopping conditions; they reference
 - `templates/` — starting points for specs, evals, Work Files, and new
   projects' `AGENTS.md` / `CLAUDE.md`.
 - `bin/` — the commands below.
+- `CHANGELOG.md` — one section per tag; see Staying current below.
 
 ## Commands
 
@@ -110,4 +111,13 @@ from at the bottom of `AGENTS.md`. As the harness moves on — new skills, a
 changed `docs/development_workflow.md` — a project's stamp can fall behind.
 
 From the project's root directory, run `harness-check` to see if it's
-behind, then `harness-upgrade` to catch it up (see Commands above).
+behind, then `harness-upgrade` to catch it up (see Commands above). Both
+commands print the relevant `CHANGELOG.md` sections for any tag released
+since the project's stamped version, including migration notes when a
+change requires action in already-bootstrapped projects.
+
+**Tag discipline:** cut a new annotated tag whenever the harness reaches a
+checkpoint other projects should pick up, and add the matching
+`## [vX.Y.Z] - date` section to `CHANGELOG.md` in the same commit. This is
+what lets `harness-check`/`harness-upgrade` show a project what changed —
+an untagged commit or a tag with no changelog section is invisible to them.
