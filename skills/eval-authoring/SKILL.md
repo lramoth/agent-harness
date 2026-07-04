@@ -16,7 +16,9 @@ Non-negotiable rules:
   implementation identifiers or test mechanics (class names, function
   names, file paths, return values, internal algorithms).
 
-Start from the template at `~/Projects/harness/templates/eval.template.md`.
+Start from the template at `<harness-root>/templates/eval.template.md`, where
+`<harness-root>` is the path recorded in this project's `.harness-root` file
+(or the harness repo root itself, if working inside the harness repo).
 
 Full evaluation lifecycle rules:
-`~/Projects/harness/docs/development_workflow.md`.
+`<harness-root>/docs/development_workflow.md`.

@@ -179,7 +179,8 @@ confirmation.
 
 Agents must not explore, list, or reference anything outside the project
 directory tree, with one exception: reading files under the harness directory
-(~/Projects/harness) is always permitted.
+(the path recorded in the project's `.harness-root` file) is always
+permitted.
 
 ## Work File Lifecycle
 

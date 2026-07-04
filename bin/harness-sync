@@ -7,7 +7,9 @@
 
 set -eu
 
-SKILLS_SRC="$HOME/Projects/harness/skills"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+HARNESS_DIR="$(dirname "$SCRIPT_DIR")"
+SKILLS_SRC="$HARNESS_DIR/skills"
 TARGETS="$HOME/.claude/skills $HOME/.codex/skills"
 
 created=0

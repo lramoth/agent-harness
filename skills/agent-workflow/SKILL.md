@@ -16,8 +16,10 @@ The four roles and their boundaries:
 - **Evaluation Agent** — runs in fresh context; never modifies
   implementation.
 
-Read `~/Projects/harness/docs/development_workflow.md` before acting in any
+Read `<harness-root>/docs/development_workflow.md` before acting in any
 role — it defines lifecycles, reporting requirements, and stopping
-conditions.
+conditions. `<harness-root>` is the path recorded in this project's
+`.harness-root` file (or the harness repo root itself, if working inside the
+harness repo).
 
-Principles behind these rules: `~/Projects/harness/docs/governance.md`.
+Principles behind these rules: `<harness-root>/docs/governance.md`.

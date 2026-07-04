@@ -21,12 +21,14 @@ where they are declared, and what must be reported when one is introduced.
 
 This project follows the harness development workflow. Roles, lifecycles,
 and stopping conditions are defined in
-`~/Projects/harness/docs/development_workflow.md` and surfaced through
+`<harness-root>/docs/development_workflow.md` and surfaced through
 globally installed skills. Governance principles:
-`~/Projects/harness/docs/governance.md`. An existing artifact may be read
-for domain context, but its layout is never a substitute for invoking the
-relevant skill, which carries the current structure.
+`<harness-root>/docs/governance.md`. `<harness-root>` is the path recorded
+in this project's `.harness-root` file, written by `harness-init` at
+bootstrap time. An existing artifact may be read for domain context, but its
+layout is never a substitute for invoking the relevant skill, which carries
+the current structure.
 
 Agents must not explore, list, or reference anything outside this project's
-directory tree, with one exception: reading files under the harness directory
-(`~/Projects/harness`) is always permitted.
+directory tree, with one exception: reading files under the harness
+directory (the path in `.harness-root`) is always permitted.

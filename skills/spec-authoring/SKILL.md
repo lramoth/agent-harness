@@ -15,7 +15,9 @@ Non-negotiable rules:
 - The spec is the implementation contract: it defines inputs, outputs,
   failure handling, acceptance criteria, constraints, and out-of-scope work.
 
-Start from the template at `~/Projects/harness/templates/spec.template.md`.
+Start from the template at `<harness-root>/templates/spec.template.md`, where
+`<harness-root>` is the path recorded in this project's `.harness-root` file
+(or the harness repo root itself, if working inside the harness repo).
 
 Full specification lifecycle rules:
-`~/Projects/harness/docs/development_workflow.md`.
+`<harness-root>/docs/development_workflow.md`.

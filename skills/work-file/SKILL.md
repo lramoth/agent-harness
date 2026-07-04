@@ -15,7 +15,9 @@ Non-negotiable rules:
   path, evaluation result, final summary, and Director acceptance status.
 
 Start from the template at
-`~/Projects/harness/templates/work-file.template.md`.
+`<harness-root>/templates/work-file.template.md`, where `<harness-root>` is
+the path recorded in this project's `.harness-root` file (or the harness
+repo root itself, if working inside the harness repo).
 
 Full Work File lifecycle rules:
-`~/Projects/harness/docs/development_workflow.md`.
+`<harness-root>/docs/development_workflow.md`.
