@@ -81,8 +81,9 @@ already exist. Run `harness-attach` instead (see Commands above).
 
 ## Example: requesting a feature
 
-With the project bootstrapped and skills synced, start by asking as the
-Director:
+With the project bootstrapped and skills synced, open the project in Claude
+Code or Codex (whichever you ran `harness-sync` for) and start by asking as
+the Director:
 
 > As Director, create a Work File for a new feature: a command-line tool
 > `wordcount` that reads text from stdin and prints the number of words to
