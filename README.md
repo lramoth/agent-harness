@@ -61,6 +61,9 @@ This creates:
 
 - `AGENTS.md` and `CLAUDE.md` — copied from the harness templates, with the
   harness version (from `git describe`) stamped at the bottom of `AGENTS.md`
+- `architecture.md` — copied from the harness template; describes the
+  application's current structure and is kept up to date by the
+  `architecture` skill as features land
 - `specs/`, `evals/`, `work/` — empty directories for the workflow's
   artifacts. Work Files are created per feature (one file per feature, named
   after the feature) by the `work-file` skill — none are pre-seeded.
@@ -79,19 +82,21 @@ This creates:
 With the project bootstrapped and skills synced, start by asking as the
 Director:
 
-> As Director, create a Work File for a new feature: add a `/health`
-> endpoint that returns `{"status": "ok"}` as JSON with a 200 status code.
-> No auth required.
+> As Director, create a Work File for a new feature: add an `add(a, b)`
+> utility function that returns the sum of two numbers.
 
 This produces a Work File under `work/` with just the goal and intent
 filled in — no implementation detail, per the Director's role in
-`docs/development_workflow.md`.
+`docs/development_workflow.md`. It's deliberately small so the full loop
+below runs in seconds.
 
 Then hand it off:
 
 > Act as Planner Agent and carry `work/<feature-name>.md` through to
 > completion — write the spec, coordinate implementation, write the eval,
-> coordinate evaluation, and record the results.
+> coordinate evaluation, update `architecture.md` to reflect the current
+> state, and record the results.
 
-This drives the full loop: specification, implementation, evaluation, and
-a final summary recorded back in the Work File for the Director to accept.
+This drives the full loop: specification, implementation, evaluation, an
+architecture update, and a final summary recorded back in the Work File for
+the Director to accept.

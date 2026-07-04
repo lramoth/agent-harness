@@ -13,7 +13,7 @@ if [ ! -d "$TEMPLATES_DIR" ]; then
 fi
 
 # Refuse to overwrite anything that already exists.
-for target in AGENTS.md CLAUDE.md .harness-root; do
+for target in AGENTS.md CLAUDE.md architecture.md .harness-root; do
   if [ -e "$target" ]; then
     echo "error: $target already exists in $(pwd) — refusing to overwrite" >&2
     exit 1
@@ -25,6 +25,7 @@ mkdir -p specs evals work
 
 cp "$TEMPLATES_DIR/AGENTS.template.md" AGENTS.md
 cp "$TEMPLATES_DIR/CLAUDE.template.md" CLAUDE.md
+cp "$TEMPLATES_DIR/architecture.template.md" architecture.md
 
 printf '%s\n' "$HARNESS_DIR" > .harness-root
 
@@ -36,6 +37,7 @@ echo
 echo "Created:"
 echo "  AGENTS.md     — fill in Project Overview, Stack & Conventions, Dependencies (harness version stamped at the bottom)"
 echo "  CLAUDE.md     — imports AGENTS.md; add Claude Code overrides if needed"
+echo "  architecture.md — current-state application structure; kept up to date by the architecture skill as features land"
 echo "  specs/        — behavioral specifications"
 echo "  evals/        — evaluation specifications"
 echo "  work/         — per-feature Work Files (empty; the work-file skill creates one per feature)"

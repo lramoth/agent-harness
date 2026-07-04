@@ -24,6 +24,9 @@ The Director remains responsible for feature selection and final acceptance.
   record for each feature.
 - `specs/` contains Planner Agent-authored behavioral specifications.
 - `evals/` contains Planner Agent-authored evaluation specifications.
+- `architecture.md` describes the application's current structure. It is
+  updated, never appended to, whenever a feature changes the structure it
+  describes.
 
 The Work File is the durable record for a feature. Historical records may
 remain in the repository, but they are not part of the active workflow and are
@@ -265,17 +268,19 @@ The Planner Agent records the evaluation result in the Work File.
    tests, and reports observations.
 6. The Planner Agent records the implementation summary, observations, tests
    or checks run, assumptions, limitations, and future work in the Work File.
-7. Only after implementation is complete and recorded (steps 5-6) does the
+7. If the feature changed the application's structure, the Planner Agent
+   updates `architecture.md` to reflect the current state.
+8. Only after implementation is complete and recorded (steps 5-7) does the
    Planner Agent write an evaluation specification in `evals/` and record its
    path in the Work File. The evaluation specification must not be authored
    earlier or in parallel with implementation, so that it never exists in a
    location the Implementation Agent could read while working.
-8. The Planner Agent delegates evaluation to a fresh-context Evaluation Agent.
-9. The Evaluation Agent reports scenario results and an overall verdict.
-10. The Planner Agent records the evaluation result and final summary in the
+9. The Planner Agent delegates evaluation to a fresh-context Evaluation Agent.
+10. The Evaluation Agent reports scenario results and an overall verdict.
+11. The Planner Agent records the evaluation result and final summary in the
     Work File.
-11. The Planner Agent stops.
-12. The Director reviews the completed Work File and accepts, rejects, or
+12. The Planner Agent stops.
+13. The Director reviews the completed Work File and accepts, rejects, or
     requests additional work.
 
 ## Planner Agent Stopping Condition
@@ -288,6 +293,7 @@ The Planner Agent's responsibility is complete after it records:
 - assumptions
 - limitations
 - future work
+- architecture.md updates, if the feature changed the application's structure
 - evaluation result
 - final summary
 
