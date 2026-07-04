@@ -1,4 +1,4 @@
-# harness
+# agent-harness
 
 A reusable, tool-agnostic AI-development methodology, kept as plain markdown
 in one repository and consumed by every project.
