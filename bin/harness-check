@@ -19,9 +19,9 @@ if [ ! -f AGENTS.md ]; then
   exit 1
 fi
 
-STAMPED="$(grep -o 'harness version: [^ ]*' AGENTS.md | tail -1 | cut -d' ' -f3 || true)"
+STAMPED="$(grep -o 'agent-harness version: [^ ]*' AGENTS.md | tail -1 | cut -d' ' -f3 || true)"
 if [ -z "$STAMPED" ]; then
-  echo "error: no '<!-- harness version: ... -->' stamp found in AGENTS.md" >&2
+  echo "error: no '<!-- agent-harness version: ... -->' stamp found in AGENTS.md" >&2
   exit 1
 fi
 

@@ -34,7 +34,7 @@ if [ ! -f .gitignore ] || ! grep -qxF '.harness-root' .gitignore; then
 fi
 
 HARNESS_VERSION="$(git -C "$HARNESS_DIR" describe --tags --always 2>/dev/null || echo unknown)"
-printf '\n<!-- harness version: %s -->\n' "$HARNESS_VERSION" >> AGENTS.md
+printf '\n<!-- agent-harness version: %s -->\n' "$HARNESS_VERSION" >> AGENTS.md
 
 echo "Bootstrapped project from harness $HARNESS_VERSION"
 echo
