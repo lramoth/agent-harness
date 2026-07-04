@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# harness-attach — reconnect an already-bootstrapped project (fresh clone,
+# second machine, CI) to this harness checkout. Unlike harness-init, it never
+# writes AGENTS.md, CLAUDE.md, or architecture.md — those are expected to
+# already exist (they're committed to the project's repo). It only writes
+# .harness-root if missing (gitignored, machine-specific) and creates any of
+# specs/evals/work that are missing. It touches nothing that already exists.
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+HARNESS_DIR="$(dirname "$SCRIPT_DIR")"
+
+if [ ! -f AGENTS.md ]; then
+  echo "error: AGENTS.md not found in $(pwd) — this doesn't look like a harness-init'd project." >&2
+  echo "Use harness-init to bootstrap a new project instead." >&2
+  exit 1
+fi
+
+created=""
+
+if [ -e .harness-root ]; then
+  echo ".harness-root already present — leaving it as is."
+else
+  printf '%s\n' "$HARNESS_DIR" > .harness-root
+  created="$created .harness-root"
+  echo "Wrote .harness-root -> $HARNESS_DIR"
+fi
+
+if [ ! -f .gitignore ] || ! grep -qxF '.harness-root' .gitignore; then
+  printf '%s\n' ".harness-root" >> .gitignore
+  echo "Added .harness-root to .gitignore"
+fi
+
+for dir in specs evals work; do
+  if [ -d "$dir" ]; then
+    echo "$dir/ already present — leaving it as is."
+  else
+    mkdir -p "$dir"
+    created="$created $dir/"
+    echo "Created $dir/"
+  fi
+done
+
+echo
+if [ -n "$created" ]; then
+  echo "harness-attach: created$created"
+else
+  echo "harness-attach: nothing to do, project was already fully attached."
+fi
+echo
+echo "Next steps:"
+echo "  1. Run $HARNESS_DIR/bin/harness-sync if you haven't already on this machine (safe to re-run)."
+echo "  2. Run $HARNESS_DIR/bin/harness-check to see if this project's stamped harness version is current."

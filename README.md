@@ -26,6 +26,8 @@ restate roles, lifecycles, or stopping conditions; they reference
 - `templates/` — starting points for specs, evals, Work Files, and new
   projects' `AGENTS.md` / `CLAUDE.md`.
 - `bin/harness-init` — project bootstrap script.
+- `bin/harness-attach` — reconnects an already-bootstrapped project (fresh
+  clone, second machine, CI) to this harness checkout.
 
 ## Skill distribution
 
@@ -72,6 +74,21 @@ This creates:
   `harness-init` adds it to `.gitignore` automatically.
 
 `harness-init` refuses to overwrite any file that already exists.
+
+## Reconnecting a project on a new clone or machine
+
+`.harness-root` is gitignored (it's machine-specific), so a fresh clone,
+a second machine, or a CI checkout of an already-bootstrapped project won't
+have it — and `harness-init` will refuse to run again since `AGENTS.md` etc.
+already exist. Use `harness-attach` instead:
+
+```sh
+/path/to/harness/bin/harness-attach
+```
+
+It writes `.harness-root` if missing, creates any of `specs/`, `evals/`,
+`work/` that are missing, and otherwise touches nothing that already exists.
+Safe to run anytime, including on an already-attached project.
 
 **Next steps:**
 
