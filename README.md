@@ -60,3 +60,25 @@ Work File, writes a `.harness-root` file recording the harness's location so
 skills and docs can find it regardless of where it's cloned, refuses to
 overwrite existing files, and prints the next steps. Fill in the
 project-specific sections of `AGENTS.md` and you are ready to work.
+
+## Example: requesting a feature
+
+With the project bootstrapped and skills synced, start by asking as the
+Director:
+
+> As Director, create a Work File for a new feature: add a `/health`
+> endpoint that returns `{"status": "ok"}` as JSON with a 200 status code.
+> No auth required.
+
+This produces a Work File under `work/` with just the goal and intent
+filled in — no implementation detail, per the Director's role in
+`docs/development_workflow.md`.
+
+Then hand it off:
+
+> Act as Planner Agent and carry work/<feature-name>.md through to
+> completion — write the spec, coordinate implementation, write the eval,
+> coordinate evaluation, and record the results.
+
+This drives the full loop: specification, implementation, evaluation, and
+a final summary recorded back in the Work File for the Director to accept.
