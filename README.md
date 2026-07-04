@@ -82,7 +82,7 @@ already exist. Run `harness-attach` instead (see Commands above).
 ## Example: requesting a feature
 
 With the project bootstrapped and skills synced, open the project in Claude
-Code or Codex (whichever you ran `harness-sync` for) and start by asking as
+Code or Codex (`harness-sync` links skills into both) and start by asking as
 the Director:
 
 > As Director, create a Work File for a new feature: a command-line tool
