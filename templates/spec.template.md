@@ -89,9 +89,9 @@ Explicitly excluded work.
 For implementation sessions, report results to the Planner Agent for recording
 in the Work File.
 
-Implementation report contents are defined in
-`<harness-root>/docs/development_workflow.md`, where `<harness-root>` is the
-path recorded in this project's `.harness-root` file (or the harness repo
-root itself, if working inside the harness repo).
+Implementation report contents are defined at
+`<harness-root>/docs/development_workflow.md#implementation-report-contents`,
+where `<harness-root>` is the path recorded in this project's `.harness-root`
+file (or the harness repo root itself, if working inside the harness repo).
 
 Implementation sessions must not evaluate correctness against the specification.

@@ -107,14 +107,8 @@ The Implementation Agent is responsible for:
 The Implementation Agent does not evaluate correctness against the
 specification.
 
-Implementation reports must include:
-
-- spec used
-- summary of observable work completed
-- tests or checks run
-- assumptions made
-- limitations or gaps
-- future work recommendations, when applicable
+Implementation report contents: see
+[Implementation Report Contents](#implementation-report-contents) below.
 
 Implementation summaries, observations, assumptions, limitations, and future
 work must describe externally observable behavior and completed capabilities.
@@ -155,6 +149,17 @@ Evaluation results must describe observable behavior and must not mention
 implementation identifiers or test mechanics, including class names, function
 names, method names, file paths, return values, booleans, exception class
 names, exact helper inputs, or internal algorithms.
+
+## Implementation Report Contents
+
+Implementation reports must include:
+
+- spec used
+- summary of observable work completed
+- tests or checks run
+- assumptions made
+- limitations or gaps
+- future work recommendations, when applicable
 
 ## Project Rules
 
