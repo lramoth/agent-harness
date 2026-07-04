@@ -89,7 +89,7 @@ filled in — no implementation detail, per the Director's role in
 
 Then hand it off:
 
-> Act as Planner Agent and carry work/<feature-name>.md through to
+> Act as Planner Agent and carry `work/<feature-name>.md` through to
 > completion — write the spec, coordinate implementation, write the eval,
 > coordinate evaluation, and record the results.
 
