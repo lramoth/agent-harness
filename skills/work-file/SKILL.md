@@ -13,9 +13,9 @@ Non-negotiable rules:
   generic name like `work/WORK_FILE.md`.
 - It records paths to specs and evals; it never duplicates their contents.
 - Per the workflow doc, it must record: the original request, Planner Agent
-  decisions, specification path, implementation summary, observations,
-  tests or checks run, assumptions, limitations, future work, evaluation
-  path, evaluation result, final summary, and Director acceptance status.
+  decisions, specification path, the implementation report (contents defined
+  in the workflow doc), evaluation path, evaluation result, final summary,
+  and Director acceptance status.
 
 Start from the template at
 `<harness-root>/templates/work-file.template.md`, where `<harness-root>` is

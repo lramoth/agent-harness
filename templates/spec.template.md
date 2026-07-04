@@ -89,12 +89,9 @@ Explicitly excluded work.
 For implementation sessions, report results to the Planner Agent for recording
 in the Work File.
 
-The implementation report must include:
-
-- spec used
-- summary of observable work completed
-- tests or checks run
-- assumptions made
-- gaps or suspected bugs
+Implementation report contents are defined in
+`<harness-root>/docs/development_workflow.md`, where `<harness-root>` is the
+path recorded in this project's `.harness-root` file (or the harness repo
+root itself, if working inside the harness repo).
 
 Implementation sessions must not evaluate correctness against the specification.
