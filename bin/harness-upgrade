@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# harness-upgrade — link any new harness skills locally and update this
-# project's stamped harness version. Run from the root of a project that was
-# bootstrapped with harness-init.
+# harness-upgrade — link any new harness skills locally, prune dangling
+# skill links, and update this project's stamped harness version. Run from
+# the root of a project that was bootstrapped with harness-init.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
@@ -24,8 +24,8 @@ CURRENT="$(git -C "$HARNESS_DIR" describe --tags --always)"
 
 echo "harness-upgrade: $PROJECT_NAME is stamped at ${STAMPED:-<none>}, harness is at $CURRENT"
 echo
-echo "Running harness-sync..."
-"$SCRIPT_DIR/harness-sync"
+echo "Running harness-sync --repair..."
+"$SCRIPT_DIR/harness-sync" --repair
 echo
 
 if [ "$STAMPED" = "$CURRENT" ]; then

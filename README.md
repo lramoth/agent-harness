@@ -33,11 +33,11 @@ Run these as `/path/to/harness/bin/<command>`.
 
 | Command | Purpose | Safe to re-run? |
 | --- | --- | --- |
-| `harness-sync` | Symlinks every skill under `skills/` into `~/.claude/skills` and `~/.codex/skills`, skipping anything already present. | Yes — additive only. |
+| `harness-sync` | Symlinks every skill under `skills/` into `~/.claude/skills` and `~/.codex/skills`, skipping anything already present. `harness-sync --repair` additionally prunes dangling symlinks that point into this harness (skills removed upstream) before relinking. | Yes — additive only; `--repair` only ever removes symlinks it recognizes as pointing into this harness. |
 | `harness-init` | Bootstraps a new project: copies `AGENTS.md`, `CLAUDE.md`, `architecture.md` from templates, creates `specs/`, `evals/`, `work/`, writes `.harness-root`, and stamps the harness version at the bottom of `AGENTS.md`. | Yes — never overwrites, but errors out on a second run instead of no-op'ing (see `harness-attach`). |
 | `harness-attach` | Reconnects an already-bootstrapped project (fresh clone, second machine, CI): writes `.harness-root` if missing and creates any of `specs/`, `evals/`, `work/` that are missing. | Yes — touches nothing that already exists. |
-| `harness-check` | Reports whether the project's stamped harness version is behind, and which harness skills aren't linked locally yet. Makes no changes. | Yes — read-only. |
-| `harness-upgrade` | Runs `harness-sync`, then updates the project's stamped harness version to match. | Yes. |
+| `harness-check` | Reports whether the project's stamped harness version is behind, which harness skills aren't linked locally yet, and which linked skills are dangling (removed upstream). Makes no changes. Exits nonzero if anything is out of date, missing, or dangling. | Yes — read-only. |
+| `harness-upgrade` | Runs `harness-sync --repair` to link new skills and prune dangling ones, then updates the project's stamped harness version to match. | Yes. |
 
 Because skills are distributed as symlinks, editing a skill in the harness
 updates it for both Claude Code and Codex immediately. The skill files

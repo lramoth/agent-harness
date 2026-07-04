@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # harness-check — report whether this project's stamped harness version is
-# behind the harness repo, and which harness skills aren't linked locally yet.
-# Run from the root of a project that was bootstrapped with harness-init.
+# behind the harness repo, which harness skills aren't linked locally yet,
+# and which linked skills are dangling (removed upstream). Run from the root
+# of a project that was bootstrapped with harness-init. Makes no changes.
+# Exits 0 when everything is current and linked; exits 1 otherwise.
 set -euo pipefail
 
 if [ ! -f .harness-root ]; then
@@ -22,12 +24,6 @@ fi
 STAMPED="$(grep -o 'agent-harness version: [^ ]*' AGENTS.md | tail -1 | cut -d' ' -f3 || true)"
 CURRENT="$(git -C "$HARNESS_DIR" describe --tags --always)"
 
-if [ -z "$STAMPED" ]; then
-  echo "harness-check: $PROJECT_NAME has no '<!-- agent-harness version: ... -->' stamp in AGENTS.md"
-  echo "Run harness-upgrade to add it."
-  exit 0
-fi
-
 missing=""
 for skill_dir in "$SKILLS_SRC"/*/; do
   skill=$(basename "$skill_dir")
@@ -41,12 +37,28 @@ for skill_dir in "$SKILLS_SRC"/*/; do
   done
 done
 
-if [ "$STAMPED" = "$CURRENT" ] && [ -z "$missing" ]; then
-  echo "harness-check: $PROJECT_NAME is up to date ($CURRENT), all skills linked."
-  exit 0
-fi
+dangling=""
+for target in $TARGETS; do
+  [ -d "$target" ] || continue
+  for entry in "$target"/*; do
+    [ -e "$entry" ] || [ -L "$entry" ] || continue
+    [ -L "$entry" ] || continue
+    link_target="$(readlink "$entry")"
+    case "$link_target" in
+      "$SKILLS_SRC"/*)
+        if [ ! -e "$entry" ]; then
+          dangling="$dangling|$entry -> $link_target"
+        fi
+        ;;
+    esac
+  done
+done
 
-echo "harness-check: $PROJECT_NAME is stamped at $STAMPED, harness is at $CURRENT"
+if [ -z "$STAMPED" ]; then
+  echo "harness-check: $PROJECT_NAME has no '<!-- agent-harness version: ... -->' stamp in AGENTS.md"
+elif [ "$STAMPED" != "$CURRENT" ]; then
+  echo "harness-check: $PROJECT_NAME is stamped at $STAMPED, harness is at $CURRENT"
+fi
 
 if [ -n "$missing" ]; then
   echo
@@ -56,5 +68,22 @@ if [ -n "$missing" ]; then
   done
 fi
 
-echo
-echo "Run harness-upgrade to link new skills and update the stamp."
+if [ -n "$dangling" ]; then
+  echo
+  echo "Dangling skill links (removed upstream):"
+  old_ifs="$IFS"
+  IFS='|'
+  for entry in $dangling; do
+    [ -n "$entry" ] && echo "  - $entry"
+  done
+  IFS="$old_ifs"
+fi
+
+if [ -z "$STAMPED" ] || [ "$STAMPED" != "$CURRENT" ] || [ -n "$missing" ] || [ -n "$dangling" ]; then
+  echo
+  echo "Run harness-upgrade to link new skills, prune dangling links, and update the stamp."
+  exit 1
+fi
+
+echo "harness-check: $PROJECT_NAME is up to date ($CURRENT), all skills linked, no dangling links."
+exit 0

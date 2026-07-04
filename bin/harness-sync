@@ -1,9 +1,15 @@
 #!/bin/sh
 # harness-sync — distribute harness skills to tool-specific skill directories.
 #
-# Strictly additive: creates a symlink for each skill only when no entry with
-# that name exists in the target directory. Never deletes, overwrites, or
-# repairs existing entries (including dead symlinks and ~/.codex/skills/.system).
+# Default mode is strictly additive: creates a symlink for each skill only
+# when no entry with that name exists in the target directory. Never
+# deletes, overwrites, or repairs existing entries (including dead symlinks
+# and ~/.codex/skills/.system).
+#
+# --repair: also removes dangling symlinks under the target directories that
+# point into this harness's skills/ (i.e. skills removed upstream), before
+# doing the normal additive pass. Only ever touches symlinks that resolve
+# into this harness checkout; leaves everything else untouched.
 
 set -eu
 
@@ -11,6 +17,38 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 HARNESS_DIR="$(dirname "$SCRIPT_DIR")"
 SKILLS_SRC="$HARNESS_DIR/skills"
 TARGETS="$HOME/.claude/skills $HOME/.codex/skills"
+
+REPAIR=0
+case "${1:-}" in
+    --repair) REPAIR=1 ;;
+    "") ;;
+    *)
+        echo "usage: harness-sync [--repair]" >&2
+        exit 1
+        ;;
+esac
+
+pruned=0
+
+if [ "$REPAIR" -eq 1 ]; then
+    for target in $TARGETS; do
+        [ -d "$target" ] || continue
+        for entry in "$target"/*; do
+            [ -e "$entry" ] || [ -L "$entry" ] || continue
+            [ -L "$entry" ] || continue
+            link_target=$(readlink "$entry")
+            case "$link_target" in
+                "$SKILLS_SRC"/*)
+                    if [ ! -e "$entry" ]; then
+                        rm "$entry"
+                        echo "pruned dangling link: $entry -> $link_target"
+                        pruned=$((pruned + 1))
+                    fi
+                    ;;
+            esac
+        done
+    done
+fi
 
 created=0
 skipped=0
@@ -30,5 +68,9 @@ for target in $TARGETS; do
     done
 done
 
-echo "harness-sync: $created link(s) created, $skipped already present."
+if [ "$REPAIR" -eq 1 ]; then
+    echo "harness-sync: $pruned dangling link(s) pruned, $created link(s) created, $skipped already present."
+else
+    echo "harness-sync: $created link(s) created, $skipped already present."
+fi
 exit 0
