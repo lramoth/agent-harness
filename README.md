@@ -82,8 +82,9 @@ This creates:
 With the project bootstrapped and skills synced, start by asking as the
 Director:
 
-> As Director, create a Work File for a new feature: add an `add(a, b)`
-> utility function that returns the sum of two numbers.
+> As Director, create a Work File for a new feature: a command-line tool
+> `wordcount` that reads text from stdin and prints the number of words to
+> stdout.
 
 This produces a Work File under `work/` with just the goal and intent
 filled in — no implementation detail, per the Director's role in
