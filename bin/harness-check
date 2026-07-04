@@ -20,12 +20,13 @@ if [ ! -f AGENTS.md ]; then
 fi
 
 STAMPED="$(grep -o 'agent-harness version: [^ ]*' AGENTS.md | tail -1 | cut -d' ' -f3 || true)"
-if [ -z "$STAMPED" ]; then
-  echo "error: no '<!-- agent-harness version: ... -->' stamp found in AGENTS.md" >&2
-  exit 1
-fi
-
 CURRENT="$(git -C "$HARNESS_DIR" describe --tags --always)"
+
+if [ -z "$STAMPED" ]; then
+  echo "harness-check: $PROJECT_NAME has no '<!-- agent-harness version: ... -->' stamp in AGENTS.md"
+  echo "Run harness-upgrade to add it."
+  exit 0
+fi
 
 missing=""
 for skill_dir in "$SKILLS_SRC"/*/; do
